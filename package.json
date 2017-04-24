@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
-    "config": "node build/parser/parser.js -t titi,tata,toto,tutu",
+    "config": "node build/parser/parser.js -t",
     "build": "./node_modules/.bin/babel src/ --out-dir build/",
     "build:watch": "./node_modules/.bin/babel --watch src/ --out-dir build/"
   },

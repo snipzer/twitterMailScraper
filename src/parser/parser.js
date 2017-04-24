@@ -53,6 +53,20 @@ let accessTokenSecure = argArray[1];
 let consumerKey = argArray[2];
 let consumerSecret = argArray[3];
 
+fs.readFile("config/config.sample.yml", 'utf8', (err,data) =>
+{
+    if (err) return console.log(err);
 
+
+    let result = data.replace(/ACCESS_TOKEN_SECRET/g, accessTokenSecure)
+        .replace(/ACCESS_TOKEN/g, accessToken)
+        .replace(/CONSUMER_SECRET/g, consumerSecret)
+        .replace(/CONSUMER_KEY/g, consumerKey);
+
+    fs.writeFile("config/config.yml", result, 'utf8', (err) =>
+    {
+        if (err) return console.log(err);
+    });
+});
 
 console.log(argArray);
