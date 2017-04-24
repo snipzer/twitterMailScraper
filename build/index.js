@@ -1,13 +1,18 @@
 'use strict';
 
-var _configYml = require('config-yml');
+var _jsYaml = require('js-yaml');
 
-var _configYml2 = _interopRequireDefault(_configYml);
+var _jsYaml2 = _interopRequireDefault(_jsYaml);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log(_configYml2.default.default.app.twitter.accessToken); //const config = require('config-yml');
+var config = _jsYaml2.default.safeLoad(_fs2.default.readFileSync('config/config.yml', 'utf8'));
 
-console.log(_configYml2.default.default.app.twitter.accessTokenSecret);
-console.log(_configYml2.default.default.app.twitter.consumerKey);
-console.log(_configYml2.default.default.app.twitter.consumerSecret);
+console.log(config.default.app.twitter.accessToken);
+console.log(config.default.app.twitter.accessTokenSecret);
+console.log(config.default.app.twitter.consumerKey);
+console.log(config.default.app.twitter.consumerSecret);
