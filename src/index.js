@@ -34,8 +34,10 @@ const client = new Twitter({
     access_token_secret: config.default.app.twitter.accessTokenSecret
 });
 
-client.get('search/tweets', {q: args.keyword}, (error, tweets, response) => {
-    if (error)
+
+client.get('search/tweets', {q: args.keyword}, function(error, tweets, response)
+{
+    if(!error)
     {
         console.log(tweets);
     }
