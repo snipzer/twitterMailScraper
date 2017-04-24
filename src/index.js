@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import fs from 'fs';
 import ArgParseObj from 'argparse';
-
+import Twitter from 'twitter';
 
 const config = yaml.safeLoad(fs.readFileSync('config/config.yml', 'utf8'));
 
@@ -27,5 +27,20 @@ parser.addArgument(
 
 const args = parser.parseArgs();
 
+const client = new Twitter({
+    consumer_key: config.default.app.twitter.consumerKey,
+    consumer_secret: config.default.app.twitter.consumerSecret,
+    access_token_key: config.default.app.twitter.accessToken,
+    access_token_secret: config.default.app.twitter.accessTokenSecret
+});
 
-console.log(args.keyword);
+client.get('search/tweets', {q: args.keyword}, (error, tweets, response) => {
+    if (error)
+    {
+        console.log(tweets);
+    }
+    else
+    {
+        console.log(error);
+    }
+});

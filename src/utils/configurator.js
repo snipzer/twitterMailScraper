@@ -12,7 +12,7 @@ const parser = new ArgParse({
 parser.addArgument(
     [ '-c', '--credential' ],
     {
-        help: "Argument are: accessToken,accessTokenSecure,consumerKey,consumerSecure"
+        help: "Argument are: accessToken,accessTokenSecret,consumerKey,consumerSecure"
     }
 );
 
@@ -21,7 +21,7 @@ const args = parser.parseArgs();
 let argArray = args.credential.split(",");
 
 let accessToken = argArray[0];
-let accessTokenSecure = argArray[1];
+let accessTokenSecret = argArray[1];
 let consumerKey = argArray[2];
 let consumerSecret = argArray[3];
 
@@ -32,7 +32,7 @@ try
         if (err) return console.log(err);
 
 
-        let result = data.replace(/ACCESS_TOKEN_SECRET/g, accessTokenSecure)
+        let result = data.replace(/ACCESS_TOKEN_SECRET/g, accessTokenSecret)
             .replace(/ACCESS_TOKEN/g, accessToken)
             .replace(/CONSUMER_SECRET/g, consumerSecret)
             .replace(/CONSUMER_KEY/g, consumerKey);

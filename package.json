@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/index.js",
     "config": "node build/utils/configurator.js -c",
-    "search": "node build/index.js -k",
+    "toto": "node build/index.js -k",
     "build": "./node_modules/.bin/babel src/ --out-dir build/",
     "build:watch": "./node_modules/.bin/babel --watch src/ --out-dir build/"
   },

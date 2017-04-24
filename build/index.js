@@ -12,6 +12,10 @@ var _argparse = require('argparse');
 
 var _argparse2 = _interopRequireDefault(_argparse);
 
+var _twitter = require('twitter');
+
+var _twitter2 = _interopRequireDefault(_twitter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var config = _jsYaml2.default.safeLoad(_fs2.default.readFileSync('config/config.yml', 'utf8'));
@@ -35,4 +39,17 @@ parser.addArgument(['-k', '--keyword'], {
 
 var args = parser.parseArgs();
 
-console.log(args.keyword);
+var client = new _twitter2.default({
+    consumer_key: config.default.app.twitter.consumerKey,
+    consumer_secret: config.default.app.twitter.consumerSecret,
+    access_token_key: config.default.app.twitter.accessToken,
+    access_token_secret: config.default.app.twitter.accessTokenSecret
+});
+
+client.get('search/tweets', { q: args.keyword }, function (error, tweets, response) {
+    if (error) {
+        console.log(tweets);
+    } else {
+        console.log(error);
+    }
+});
