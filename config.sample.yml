@@ -1,0 +1,7 @@
+default:
+    app:
+        twitter:
+            accessToken:
+            accessTokenSecret:
+            consumerKey:
+            consumerSecret:

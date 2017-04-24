@@ -1,3 +1,3 @@
-/**
- * Created by snipzer on 24/04/17.
- */
+const config = require('config-yml');
+
+console.log(config.toto.test);
