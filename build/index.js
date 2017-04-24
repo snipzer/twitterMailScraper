@@ -46,25 +46,26 @@ var client = new _twitter2.default({
     access_token_secret: config.default.app.twitter.accessTokenSecret
 });
 
-// client.get('search/tweets', {q: args.keyword}, function (error, tweets, response)
-// {
-//     if(error) console.log(error);
-//
-//      // console.log(tweets.statuses);
-//
-//     tweets.statuses.forEach( function (item)
-//     {
-//         // console.log(item.user.description);
-//     });
-//
-//
-//
-// });
+var arrayMail = [];
 
-var regex = /^[a-zA-Z0-9._-]{1,64}@([a-zA-Z0-9-]{2,252}\.[a-zA-Z.]{2,6}){5,255}$/g;
+client.get('search/tweets', { q: args.keyword }, function (error, tweets, response) {
+    if (error) console.log(error);
 
-var str = "salut jean jean@example.com";
+    // console.log(tweets.statuses);
+    var promise = new Promise(function (resolve, reject) {
 
-var tab = str.match(regex);
+        tweets.statuses.forEach(function (item) {
+            console.log(item.user.description);
+            var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
-console.log(tab);
+            if (item.user.description.match(regex)) {
+                var toto = item.user.description.match(regex);
+                for (var i = 0; i < toto.length; i++) {
+                    arrayMail.push(toto[i]);
+                }
+            }
+        });
+        resolve(arrayMail);
+    });
+    Promise.all([promise]).then(console.log(arrayMail));
+});

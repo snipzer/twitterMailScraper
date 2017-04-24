@@ -40,7 +40,7 @@ try
         fs.writeFile("config/config.yml", result, 'utf8', err =>
         {
             if (err) return console.log(err);
-        }).then(console.log("Config file sucessfully updated"));
+        });
     });
 }catch(e)
 {
