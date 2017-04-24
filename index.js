@@ -1,4 +1,4 @@
-import config from 'config-yml';
+const config = require('config-yml');
 
 console.log(config.default.app.twitter.accessToken);
 console.log(config.default.app.twitter.accessTokenSecret);

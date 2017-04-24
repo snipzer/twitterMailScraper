@@ -1,4 +1,4 @@
-import ArgParseObj from 'argparse';
+const config = require('config-yml');
 
 const ArgParse = ArgParseObj.ArgumentParser;
 
@@ -35,3 +35,5 @@ parser.addArgument(
         help: "Secret d'utilisateur"
     }
 );
+
+console.log(ArgParse.accessToken);
