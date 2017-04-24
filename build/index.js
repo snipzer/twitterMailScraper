@@ -1,6 +1,13 @@
-//const config = require('config-yml');
-import config from 'config-yml';
-console.log(config.default.app.twitter.accessToken);
-console.log(config.default.app.twitter.accessTokenSecret);
-console.log(config.default.app.twitter.consumerKey);
-console.log(config.default.app.twitter.consumerSecret);
+'use strict';
+
+var _configYml = require('config-yml');
+
+var _configYml2 = _interopRequireDefault(_configYml);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log(_configYml2.default.default.app.twitter.accessToken); //const config = require('config-yml');
+
+console.log(_configYml2.default.default.app.twitter.accessTokenSecret);
+console.log(_configYml2.default.default.app.twitter.consumerKey);
+console.log(_configYml2.default.default.app.twitter.consumerSecret);
