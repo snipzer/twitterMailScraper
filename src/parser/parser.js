@@ -1,4 +1,5 @@
 import ArgParseObj from 'argparse';
+import fs from 'fs';
 
 const ArgParse = ArgParseObj.ArgumentParser;
 
@@ -45,7 +46,11 @@ parser.addArgument(
 
 const args = parser.parseArgs();
 
-console.log(args.toto);
+let argArray = args.toto.split(",");
+
+console.log(argArray);
+
+fs.writeFile("file.txt", "contents", {uid: 1000, gid: 1000}, callback);
 
 // console.log(args.accessToken);
 // console.log(args.accessTokenSecret);

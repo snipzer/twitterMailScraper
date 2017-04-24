@@ -4,6 +4,10 @@ var _argparse = require('argparse');
 
 var _argparse2 = _interopRequireDefault(_argparse);
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ArgParse = _argparse2.default.ArgumentParser;
@@ -48,7 +52,11 @@ parser.addArgument(['-t', '--toto'], {
 
 var args = parser.parseArgs();
 
-console.log(args.toto);
+var argArray = args.toto.split(",");
+
+console.log(argArray);
+
+_fs2.default.writeFile("file.txt", "contents", { uid: 1000, gid: 1000 }, callback);
 
 // console.log(args.accessToken);
 // console.log(args.accessTokenSecret);
