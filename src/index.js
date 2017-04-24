@@ -39,7 +39,7 @@ client.get('search/tweets', {q: args.keyword}, function(error, tweets, response)
 {
     if(!error)
     {
-        console.log(tweets);
+        console.log(tweets.user);
     }
     else
     {
