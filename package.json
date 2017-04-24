@@ -1,0 +1,22 @@
+{
+  "name": "twittermailscraper",
+  "version": "1.0.0",
+  "description": "toto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snipzer/twitterMailScraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snipzer/twitterMailScraper/issues"
+  },
+  "homepage": "https://github.com/snipzer/twitterMailScraper#readme",
+  "dependencies": {
+    "config-yml": "^0.7.0"
+  }
+}
