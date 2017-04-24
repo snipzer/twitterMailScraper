@@ -9,29 +9,29 @@ const parser = new ArgParse({
 });
 
 parser.addArgument(
-    [ '-f', '--firstname' ],
+    [ '-at', '--accessToken' ],
     {
-        help: 'Environnement du programme'
+        help: "Token d'acces"
     }
 );
 
 parser.addArgument(
-    [ '-l', '--lastname' ],
+    [ '-ats', '--accessTokenSecret' ],
     {
-        help: 'Port de la base de données'
+        help: "Token d'acces secret"
     }
 );
 
 parser.addArgument(
-    [ '-d', '--domain' ],
+    [ '-ck', '--consumerKey' ],
     {
-        help: 'IP de la base de données'
+        help: "Clef d'utilisateur "
     }
 );
 
 parser.addArgument(
-    [ '-d', '--domain' ],
+    [ '-cs', '--consumerSecret' ],
     {
-        help: 'IP de la base de données'
+        help: "Secret d'utilisateur"
     }
 );
