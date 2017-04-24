@@ -47,9 +47,12 @@ var client = new _twitter2.default({
 });
 
 client.get('search/tweets', { q: args.keyword }, function (error, tweets, response) {
-    if (!error) {
-        console.log(tweets);
-    } else {
-        console.log(error);
-    }
+    if (error) console.log(error);
+
+    console.log(tweets);
+
+    // tweets.forEach(item =>
+    // {
+    //     console.log(item.user.description);
+    // })
 });

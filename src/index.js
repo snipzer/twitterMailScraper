@@ -37,12 +37,12 @@ const client = new Twitter({
 
 client.get('search/tweets', {q: args.keyword}, function(error, tweets, response)
 {
-    if(!error)
-    {
-        console.log(tweets.user);
-    }
-    else
-    {
-        console.log(error);
-    }
+    if(error) console.log(error);
+
+    console.log(tweets);
+
+    // tweets.forEach(item =>
+    // {
+    //     console.log(item.user.description);
+    // })
 });
