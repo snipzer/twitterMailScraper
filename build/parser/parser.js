@@ -54,11 +54,9 @@ var args = parser.parseArgs();
 
 var argArray = args.toto.split(",");
 
+var accessToken = argArray[0];
+var accessTokenSecure = argArray[1];
+var consumerKey = argArray[2];
+var consumerSecret = argArray[3];
+
 console.log(argArray);
-
-_fs2.default.writeFile("file.txt", "contents", { uid: 1000, gid: 1000 }, callback);
-
-// console.log(args.accessToken);
-// console.log(args.accessTokenSecret);
-// console.log(args.consumerKey);
-// console.log(args.consumerSecret);

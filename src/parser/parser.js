@@ -48,11 +48,11 @@ const args = parser.parseArgs();
 
 let argArray = args.toto.split(",");
 
+let accessToken = argArray[0];
+let accessTokenSecure = argArray[1];
+let consumerKey = argArray[2];
+let consumerSecret = argArray[3];
+
+
+
 console.log(argArray);
-
-fs.writeFile("file.txt", "contents", {uid: 1000, gid: 1000}, callback);
-
-// console.log(args.accessToken);
-// console.log(args.accessTokenSecret);
-// console.log(args.consumerKey);
-// console.log(args.consumerSecret);
