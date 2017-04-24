@@ -35,14 +35,25 @@ const client = new Twitter({
 });
 
 
-client.get('search/tweets', {q: args.keyword}, function(error, tweets, response)
-{
-    if(error) console.log(error);
+// client.get('search/tweets', {q: args.keyword}, function (error, tweets, response)
+// {
+//     if(error) console.log(error);
+//
+//      // console.log(tweets.statuses);
+//
+//     tweets.statuses.forEach( function (item)
+//     {
+//         // console.log(item.user.description);
+//     });
+//
+//
+//
+// });
 
-    console.log(tweets);
+const regex = /^[a-zA-Z0-9._-]{1,64}@([a-zA-Z0-9-]{2,252}\.[a-zA-Z.]{2,6}){5,255}$/g;
 
-    // tweets.forEach(item =>
-    // {
-    //     console.log(item.user.description);
-    // })
-});
+const str = "salut jean jean@example.com";
+
+let tab = str.match(regex);
+
+console.log(tab);
