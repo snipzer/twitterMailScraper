@@ -4,9 +4,8 @@
   "description": "toto",
   "main": "index.js",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "node build/index.js -k",
     "config": "node build/utils/configurator.js -c",
-    "getMails": "node build/index.js -k",
     "build": "./node_modules/.bin/babel src/ --out-dir build/",
     "build:watch": "./node_modules/.bin/babel --watch src/ --out-dir build/"
   },
