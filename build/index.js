@@ -8,10 +8,6 @@ var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _argparse = require('argparse');
-
-var _argparse2 = _interopRequireDefault(_argparse);
-
 var _nodeTweetStream = require('node-tweet-stream');
 
 var _nodeTweetStream2 = _interopRequireDefault(_nodeTweetStream);
@@ -20,29 +16,17 @@ var _MongooseConnector = require('./utils/bdd/MongooseConnector');
 
 var _MongooseConnector2 = _interopRequireDefault(_MongooseConnector);
 
-var _UserModel = require('./utils/bdd/models/UserModel');
+var _parserIndex = require('./utils/parser/parserIndex');
 
-var _UserModel2 = _interopRequireDefault(_UserModel);
+var _parserIndex2 = _interopRequireDefault(_parserIndex);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Récupération des arguments
+var argument = new _parserIndex2.default().getArguments();
+
 // Récupération de la config
-var config = _jsYaml2.default.safeLoad(_fs2.default.readFileSync('config/config.yml', 'utf8'));
-
-// Permet la ligne de commande npm run build argument.
-var ArgParse = _argparse2.default.ArgumentParser;
-var parser = new ArgParse({
-    version: '0.0.1',
-    addHelp: true,
-    description: 'Used for create the request to twitter'
-});
-
-parser.addArgument(['-k', '--keyword'], {
-    help: "The keyword to search for"
-});
-
-// Permet de récupéré le tableau d'argument
-var args = parser.parseArgs();
+var config = _jsYaml2.default.safeLoad(_fs2.default.readFileSync('src/config/config.yml', 'utf8'));
 
 var client = new _nodeTweetStream2.default({
     consumer_key: config.default.app.twitter.consumerKey,
@@ -54,31 +38,5 @@ var client = new _nodeTweetStream2.default({
 var mongooseConnector = new _MongooseConnector2.default(config.default.db.host, config.default.db.port, config.default.db.database);
 
 mongooseConnector.run().then(function () {
-    client.on('tweet', function (tweet, error) {
-        if (error) console.log(error);
-
-        console.log("================================\n");
-
-        console.log('username: ' + tweet.user.screen_name + '\ndescription: ' + tweet.user.description + '\nfollowers: ' + tweet.user.followers_count + '\n');
-
-        console.log("================================\n\n");
-
-        var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
-
-        if (tweet.user.description != null && tweet.user.description.match(regex)) {
-            var userMail = tweet.user.description.match(regex);
-
-            _UserModel2.default.create({
-                username: tweet.user.screen_name,
-                email: userMail[0],
-                followers: tweet.user.followers_count
-            }).then(function () {
-                return console.log('=========================>USER CREATED<=========================\n*username: ' + tweet.user.screen_name + '\n*description: ' + userMail[0] + '\n*followers: ' + tweet.user.followers_count + '\n');
-            }).catch(function (err) {
-                return console.log(err);
-            });
-        }
-    });
-
-    client.track(args.keyword);
+    mongooseConnector.stealUser(client, argument);
 });
