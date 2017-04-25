@@ -58,34 +58,27 @@ mongooseConnector.run().then(function () {
     client.on('tweet', function (tweet, error) {
         if (error) console.log(error);
 
-        console.log(tweet.user.screen_name);
-        console.log(tweet.user.description);
-        console.log(tweet.user.followers_count);
+        console.log("================================\n");
 
-        var promise = new Promise(function (resolve, reject) {
-            var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
+        console.log('username: ' + tweet.user.screen_name + '\ndescription: ' + tweet.user.description + '\nfollowers: ' + tweet.user.followers_count + '\n');
 
-            if (tweet.user.description != null && tweet.user.description.match(regex)) {
-                var userMail = tweet.user.description.match(regex);
+        console.log("================================\n\n");
 
-                _UserModel2.default.create({
-                    username: tweet.user.screen_name,
-                    email: userMail[0],
-                    followers: tweet.user.followers_count
-                }).then(function () {
-                    return console.log("User created");
-                }).catch(function (err) {
-                    return console.log(err);
-                });
-            }
+        var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
-            resolve(arrayUser);
-        });
-        Promise.all([promise]).then(function () {
-            arrayUser.forEach(function (user) {});
-        }).catch(function (e) {
-            return console.log(e);
-        });
+        if (tweet.user.description != null && tweet.user.description.match(regex)) {
+            var userMail = tweet.user.description.match(regex);
+
+            _UserModel2.default.create({
+                username: tweet.user.screen_name,
+                email: userMail[0],
+                followers: tweet.user.followers_count
+            }).then(function () {
+                return console.log('=========================>USER CREATED<=========================\n*username: ' + tweet.user.screen_name + '\n*description: ' + userMail[0] + '\n*followers: ' + tweet.user.followers_count + '\n');
+            }).catch(function (err) {
+                return console.log(err);
+            });
+        }
     });
 
     client.track(args.keyword);
