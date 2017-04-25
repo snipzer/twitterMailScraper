@@ -12,9 +12,9 @@ var _argparse = require('argparse');
 
 var _argparse2 = _interopRequireDefault(_argparse);
 
-var _twitter = require('twitter');
+var _nodeTweetStream = require('node-tweet-stream');
 
-var _twitter2 = _interopRequireDefault(_twitter);
+var _nodeTweetStream2 = _interopRequireDefault(_nodeTweetStream);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39,33 +39,34 @@ parser.addArgument(['-k', '--keyword'], {
 
 var args = parser.parseArgs();
 
-var client = new _twitter2.default({
+var client = new _nodeTweetStream2.default({
     consumer_key: config.default.app.twitter.consumerKey,
     consumer_secret: config.default.app.twitter.consumerSecret,
-    access_token_key: config.default.app.twitter.accessToken,
-    access_token_secret: config.default.app.twitter.accessTokenSecret
+    token: config.default.app.twitter.accessToken,
+    token_secret: config.default.app.twitter.accessTokenSecret
 });
 
 var arrayMail = [];
 
-client.get('search/tweets', { q: args.keyword }, function (error, tweets, response) {
+client.on('tweet', function (tweet, error) {
     if (error) console.log(error);
 
-    // console.log(tweets.statuses);
+    console.log(tweet.user.description);
     var promise = new Promise(function (resolve, reject) {
+        var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
-        tweets.statuses.forEach(function (item) {
-            console.log(item.user.description);
-            var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
-
-            if (item.user.description.match(regex)) {
-                var toto = item.user.description.match(regex);
-                for (var i = 0; i < toto.length; i++) {
-                    arrayMail.push(toto[i]);
-                }
+        if (tweet.user.description != null && tweet.user.description.match(regex)) {
+            var arrayTemp = tweet.user.description.match(regex);
+            for (var i = 0; i < arrayTemp.length; i++) {
+                arrayMail.push(arrayTemp[i]);
             }
-        });
+        }
+
         resolve(arrayMail);
     });
-    Promise.all([promise]).then(console.log(arrayMail));
+    Promise.all([promise]).then(console.log(arrayMail)).catch(function (e) {
+        return console.log(e);
+    });
 });
+
+client.track(args.keyword);
