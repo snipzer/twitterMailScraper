@@ -16,11 +16,11 @@ var _nodeTweetStream = require('node-tweet-stream');
 
 var _nodeTweetStream2 = _interopRequireDefault(_nodeTweetStream);
 
-var _dbWriter = require('./utils/dbWriter');
+var _MongooseConnector = require('./utils/bdd/MongooseConnector');
 
-var _dbWriter2 = _interopRequireDefault(_dbWriter);
+var _MongooseConnector2 = _interopRequireDefault(_MongooseConnector);
 
-var _UserModel = require('./utils/UserModel');
+var _UserModel = require('./utils/bdd/models/UserModel');
 
 var _UserModel2 = _interopRequireDefault(_UserModel);
 
@@ -41,7 +41,6 @@ parser.addArgument(['-k', '--keyword'], {
     help: "The keyword to search for"
 });
 
-var arrayUser = [];
 // Permet de récupéré le tableau d'argument
 var args = parser.parseArgs();
 
@@ -52,7 +51,7 @@ var client = new _nodeTweetStream2.default({
     token_secret: config.default.app.twitter.accessTokenSecret
 });
 
-var mongooseConnector = new _dbWriter2.default(config.default.db.host, config.default.db.port, config.default.db.database);
+var mongooseConnector = new _MongooseConnector2.default(config.default.db.host, config.default.db.port, config.default.db.database);
 
 mongooseConnector.run().then(function () {
     client.on('tweet', function (tweet, error) {

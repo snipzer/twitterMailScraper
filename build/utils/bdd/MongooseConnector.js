@@ -41,11 +41,6 @@ var MongooseConnector = function () {
             });
             return promiseMongoose;
         }
-    }, {
-        key: "getUserModel",
-        value: function getUserModel() {
-            return this.userModel;
-        }
     }]);
 
     return MongooseConnector;

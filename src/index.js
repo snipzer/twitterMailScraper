@@ -2,8 +2,8 @@ import yaml from 'js-yaml';
 import fs from 'fs';
 import ArgParseObj from 'argparse';
 import Twitter from 'node-tweet-stream';
-import MongooseConnector from './utils/dbWriter';
-import UserModel from './utils/UserModel';
+import MongooseConnector from './utils/bdd/MongooseConnector';
+import UserModel from './utils/bdd/models/UserModel';
 
 // Récupération de la config
 const config = yaml.safeLoad(fs.readFileSync('config/config.yml', 'utf8'));
@@ -23,7 +23,6 @@ parser.addArgument(
     }
 );
 
-let arrayUser = [];
 // Permet de récupéré le tableau d'argument
 const args = parser.parseArgs();
 

@@ -8,7 +8,6 @@ export default class MongooseConnector {
         this.ip = ip;
         this.port = port;
         this.table = table;
-
     }
 
     run()
@@ -27,10 +26,4 @@ export default class MongooseConnector {
         });
         return promiseMongoose
     }
-
-    getUserModel()
-    {
-        return this.userModel;
-    }
-
 }
