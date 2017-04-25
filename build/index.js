@@ -18,15 +18,11 @@ var _nodeTweetStream2 = _interopRequireDefault(_nodeTweetStream);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Récupération de la config
 var config = _jsYaml2.default.safeLoad(_fs2.default.readFileSync('config/config.yml', 'utf8'));
 
-// console.log(config.default.app.twitter.accessToken);
-// console.log(config.default.app.twitter.accessTokenSecret);
-// console.log(config.default.app.twitter.consumerKey);
-// console.log(config.default.app.twitter.consumerSecret);
-
+// Permet la ligne de commande npm run build argument.
 var ArgParse = _argparse2.default.ArgumentParser;
-
 var parser = new ArgParse({
     version: '0.0.1',
     addHelp: true,
@@ -37,6 +33,7 @@ parser.addArgument(['-k', '--keyword'], {
     help: "The keyword to search for"
 });
 
+// Permet de récupéré le tableau d'argument
 var args = parser.parseArgs();
 
 var client = new _nodeTweetStream2.default({
@@ -52,6 +49,9 @@ client.on('tweet', function (tweet, error) {
     if (error) console.log(error);
 
     console.log(tweet.user.description);
+    console.log(tweet.user.screen_name);
+    console.log(tweet.user.followers_count);
+
     var promise = new Promise(function (resolve, reject) {
         var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 

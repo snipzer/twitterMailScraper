@@ -11,7 +11,7 @@ var User = mongoose.model('User', {
 });
 
 mongoose.connect('mongodb://162.243.195.173:27017/db_test', function (err) {
-    console.log(err);
+    if (err) console.log(err);
     console.log("Connected");
 
     User.create({

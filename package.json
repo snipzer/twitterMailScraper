@@ -23,6 +23,7 @@
   "dependencies": {
     "argparse": "^1.0.9",
     "js-yaml": "^3.8.3",
+    "mongoose": "^4.9.6",
     "node-tweet-stream": "^2.0.1",
     "underscore": "^1.8.3"
   },

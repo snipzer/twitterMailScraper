@@ -3,15 +3,11 @@ import fs from 'fs';
 import ArgParseObj from 'argparse';
 import Twitter from 'node-tweet-stream';
 
+// Récupération de la config
 const config = yaml.safeLoad(fs.readFileSync('config/config.yml', 'utf8'));
 
-// console.log(config.default.app.twitter.accessToken);
-// console.log(config.default.app.twitter.accessTokenSecret);
-// console.log(config.default.app.twitter.consumerKey);
-// console.log(config.default.app.twitter.consumerSecret);
-
+// Permet la ligne de commande npm run build argument.
 const ArgParse = ArgParseObj.ArgumentParser;
-
 const parser = new ArgParse({
     version: '0.0.1',
     addHelp: true,
@@ -25,6 +21,7 @@ parser.addArgument(
     }
 );
 
+// Permet de récupéré le tableau d'argument
 const args = parser.parseArgs();
 
 const client = new Twitter({
@@ -41,6 +38,9 @@ client.on('tweet', function (tweet, error)
     if (error) console.log(error);
 
     console.log(tweet.user.description);
+    console.log(tweet.user.screen_name);
+    console.log(tweet.user.followers_count);
+
     let promise = new Promise((resolve, reject) =>
     {
         const regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
