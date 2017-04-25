@@ -1,22 +1,36 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 
-const User = mongoose.model('User', {
-    username: String,
-    email: String,
-    followers: String
-});
+export default class MongooseConnector {
+    constructor(ip, port, table)
+    {
+        this.ip = ip;
+        this.port = port;
+        this.table = table;
 
-mongoose.connect('mongodb://162.243.195.173:27017/db_test', err => {
-    if(err) console.log(err);
-    console.log("Connected");
+    }
 
-    User.create({
-        username: "Bibi2",
-        email: "biib@domain.tld",
-        followers: "3000"
-    }).then(user => console.log(user))
-        .catch(e => console.log(e));
+    run()
+    {
+        const promiseMongoose = new Promise((resolve, reject) =>
+        {
+            mongoose.connect(`mongodb://${ this.ip }:${ this.port }/${ this.table }`, err =>
+            {
+                if (err)
+                {
+                    reject(err);
+                    return;
+                }
+                resolve("Connected")
+            });
+        });
+        return promiseMongoose
+    }
 
-});
+    getUserModel()
+    {
+        return this.userModel;
+    }
+
+}

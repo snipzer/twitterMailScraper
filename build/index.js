@@ -16,6 +16,14 @@ var _nodeTweetStream = require('node-tweet-stream');
 
 var _nodeTweetStream2 = _interopRequireDefault(_nodeTweetStream);
 
+var _dbWriter = require('./utils/dbWriter');
+
+var _dbWriter2 = _interopRequireDefault(_dbWriter);
+
+var _UserModel = require('./utils/UserModel');
+
+var _UserModel2 = _interopRequireDefault(_UserModel);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Récupération de la config
@@ -33,6 +41,7 @@ parser.addArgument(['-k', '--keyword'], {
     help: "The keyword to search for"
 });
 
+var arrayUser = [];
 // Permet de récupéré le tableau d'argument
 var args = parser.parseArgs();
 
@@ -43,30 +52,41 @@ var client = new _nodeTweetStream2.default({
     token_secret: config.default.app.twitter.accessTokenSecret
 });
 
-var arrayMail = [];
+var mongooseConnector = new _dbWriter2.default(config.default.db.host, config.default.db.port, config.default.db.database);
 
-client.on('tweet', function (tweet, error) {
-    if (error) console.log(error);
+mongooseConnector.run().then(function () {
+    client.on('tweet', function (tweet, error) {
+        if (error) console.log(error);
 
-    console.log(tweet.user.description);
-    console.log(tweet.user.screen_name);
-    console.log(tweet.user.followers_count);
+        console.log(tweet.user.screen_name);
+        console.log(tweet.user.description);
+        console.log(tweet.user.followers_count);
 
-    var promise = new Promise(function (resolve, reject) {
-        var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
+        var promise = new Promise(function (resolve, reject) {
+            var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
-        if (tweet.user.description != null && tweet.user.description.match(regex)) {
-            var arrayTemp = tweet.user.description.match(regex);
-            for (var i = 0; i < arrayTemp.length; i++) {
-                arrayMail.push(arrayTemp[i]);
+            if (tweet.user.description != null && tweet.user.description.match(regex)) {
+                var userMail = tweet.user.description.match(regex);
+
+                _UserModel2.default.create({
+                    username: tweet.user.screen_name,
+                    email: userMail[0],
+                    followers: tweet.user.followers_count
+                }).then(function () {
+                    return console.log("User created");
+                }).catch(function (err) {
+                    return console.log(err);
+                });
             }
-        }
 
-        resolve(arrayMail);
+            resolve(arrayUser);
+        });
+        Promise.all([promise]).then(function () {
+            arrayUser.forEach(function (user) {});
+        }).catch(function (e) {
+            return console.log(e);
+        });
     });
-    Promise.all([promise]).then(console.log(arrayMail)).catch(function (e) {
-        return console.log(e);
-    });
+
+    client.track(args.keyword);
 });
-
-client.track(args.keyword);

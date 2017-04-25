@@ -12,7 +12,7 @@ const parser = new ArgParse({
 parser.addArgument(
     [ '-c', '--credential' ],
     {
-        help: "Argument are: accessToken,accessTokenSecret,consumerKey,consumerSecure"
+        help: "Argument are: accessToken,accessTokenSecret,consumerKey,consumerSecure, ipAdresse, port, database"
     }
 );
 
@@ -24,6 +24,9 @@ let accessToken = argArray[0];
 let accessTokenSecret = argArray[1];
 let consumerKey = argArray[2];
 let consumerSecret = argArray[3];
+let ipAdresse = argArray[4];
+let port = argArray[5];
+let database = argArray[6];
 
 try
 {
@@ -35,6 +38,9 @@ try
         let result = data.replace(/ACCESS_TOKEN_SECRET/g, accessTokenSecret)
             .replace(/ACCESS_TOKEN/g, accessToken)
             .replace(/CONSUMER_SECRET/g, consumerSecret)
+            .replace(/IP_ADRESSE/g, ipAdresse)
+            .replace(/PORT/g, port)
+            .replace(/DATABASE_NAME/g, database)
             .replace(/CONSUMER_KEY/g, consumerKey);
 
         let promise = new Promise((resolve, reject) =>
