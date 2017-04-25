@@ -37,9 +37,15 @@ try {
 
         var result = data.replace(/ACCESS_TOKEN_SECRET/g, accessTokenSecret).replace(/ACCESS_TOKEN/g, accessToken).replace(/CONSUMER_SECRET/g, consumerSecret).replace(/CONSUMER_KEY/g, consumerKey);
 
-        _fs2.default.writeFile("config/config.yml", result, 'utf8', function (err) {
-            if (err) return console.log(err);
+        var promise = new Promise(function (resolve, reject) {
+            _fs2.default.writeFile("config/config.yml", result, 'utf8', function (err) {
+                if (err) return console.log(err);
+            });
+
+            resolve();
         });
+
+        Promise.all([promise]).then(console.log("Config file successfully write"));
     });
 } catch (e) {
     console.log(e);

@@ -37,10 +37,17 @@ try
             .replace(/CONSUMER_SECRET/g, consumerSecret)
             .replace(/CONSUMER_KEY/g, consumerKey);
 
-        fs.writeFile("config/config.yml", result, 'utf8', err =>
+        let promise = new Promise((resolve, reject) =>
         {
-            if (err) return console.log(err);
+            fs.writeFile("config/config.yml", result, 'utf8', err =>
+            {
+                if (err) return console.log(err);
+            });
+
+            resolve();
         });
+
+        Promise.all([promise]).then(console.log("Config file successfully write"));
     });
 }catch(e)
 {
