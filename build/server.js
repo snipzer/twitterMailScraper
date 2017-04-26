@@ -32,6 +32,8 @@ var Server = function () {
 
         this._app = (0, _express2.default)();
 
+        this._app.use(_express2.default.static(_path2.default.join(__dirname, '../public')));
+
         this._app.set('view engine', 'pug');
         this._app.set('views', _path2.default.join(__dirname, '../src/views'));
     }
