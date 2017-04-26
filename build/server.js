@@ -18,6 +18,10 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _http = require('http');
+
+var _http2 = _interopRequireDefault(_http);
+
 var _ScraperController = require('./controller/ScraperController');
 
 var _ScraperController2 = _interopRequireDefault(_ScraperController);
@@ -31,7 +35,7 @@ var Server = function () {
         _classCallCheck(this, Server);
 
         this._app = (0, _express2.default)();
-
+        this._server = _http2.default.createServer(this._app);
         this._app.use(_express2.default.static(_path2.default.join(__dirname, '../public')));
 
         this._app.set('view engine', 'pug');
@@ -55,13 +59,23 @@ var Server = function () {
             this._app.get('/', scraperController.index);
         }
     }, {
+        key: 'set',
+        value: function set(variable, middleware) {
+            this._app.set(variable, middleware);
+        }
+    }, {
+        key: 'getSocket',
+        value: function getSocket() {
+            return this._app.get("io");
+        }
+    }, {
         key: 'run',
         value: function run() {
             var _this = this;
 
             this._initControllers();
 
-            this._app.listen(this.port, function () {
+            this._server.listen(this.port, function () {
                 return console.log('Server listening on port ' + _this.port + '!');
             });
         }

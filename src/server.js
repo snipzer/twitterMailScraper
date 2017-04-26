@@ -1,12 +1,13 @@
 import path from 'path';
 import _ from 'underscore';
 import express from 'express';
+import http from "http";
 import ScraperController from './controller/ScraperController';
 
 export default class Server {
     constructor() {
         this._app = express();
-
+        this._server = http.createServer(this._app);
         this._app.use(express.static(path.join(__dirname, '../public')));
 
         this._app.set('view engine', 'pug');
@@ -27,9 +28,19 @@ export default class Server {
         this._app.get('/', scraperController.index);
     }
 
+    set(variable, middleware)
+    {
+        this._app.set(variable, middleware)
+    }
+
+    getSocket()
+    {
+        return this._app.get("io");
+    }
+
     run() {
         this._initControllers();
 
-        this._app.listen(this.port, () => console.log(`Server listening on port ${this.port}!`))
+        this._server.listen(this.port, () => console.log(`Server listening on port ${this.port}!`));
     }
 }

@@ -14,6 +14,10 @@ var _UserModel = require('./models/UserModel');
 
 var _UserModel2 = _interopRequireDefault(_UserModel);
 
+var _server = require('../../server');
+
+var _server2 = _interopRequireDefault(_server);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44,37 +48,6 @@ var MongooseConnector = function () {
                 });
             });
             return promiseMongoose;
-        }
-    }, {
-        key: 'stealUser',
-        value: function stealUser(twitter, argument) {
-            twitter.on('tweet', function (tweet, error) {
-                if (error) console.log(error);
-
-                console.log("================================\n");
-
-                console.log('username: ' + tweet.user.screen_name + '\ndescription: ' + tweet.user.description + '\nfollowers: ' + tweet.user.followers_count + '\n');
-
-                console.log("================================\n\n");
-
-                var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
-
-                if (tweet.user.description != null && tweet.user.description.match(regex)) {
-                    var userMail = tweet.user.description.match(regex);
-
-                    _UserModel2.default.create({
-                        username: tweet.user.screen_name,
-                        email: userMail[0],
-                        followers: tweet.user.followers_count
-                    }).then(function () {
-                        return console.log('=========================>USER CREATED<=========================\n*username: ' + tweet.user.screen_name + '\n*description: ' + userMail[0] + '\n*followers: ' + tweet.user.followers_count + '\n');
-                    }).catch(function (err) {
-                        return console.log(err);
-                    });
-                }
-            });
-
-            twitter.track(argument.keyword);
         }
     }]);
 
