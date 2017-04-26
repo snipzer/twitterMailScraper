@@ -8,7 +8,6 @@ export default class Scraper {
 
     constructor(pathToConfig, socket)
     {
-        console.log(socket);
         this.config = yaml.safeLoad(fs.readFileSync(pathToConfig, 'utf8'));
         this.socket = socket;
 
@@ -66,7 +65,6 @@ export default class Scraper {
                     followers: tweet.user.followers_count,
                 }).then(() =>
                     {
-                        console.log(this.socket);
                         console.log("================================\n");
                         console.log("================================\n\n");
 

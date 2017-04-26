@@ -33,6 +33,11 @@ export default class Server {
         {
             this.scraper.run(request.params.argument);
 
+
+            this.getSocket().on("toto", () =>
+            {
+                console.log("Toto is here !");
+            });
             response.render('scraperView');
         })
     }

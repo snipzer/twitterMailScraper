@@ -34,7 +34,6 @@ var Scraper = function () {
     function Scraper(pathToConfig, socket) {
         _classCallCheck(this, Scraper);
 
-        console.log(socket);
         this.config = _jsYaml2.default.safeLoad(_fs2.default.readFileSync(pathToConfig, 'utf8'));
         this.socket = socket;
 
@@ -72,8 +71,6 @@ var Scraper = function () {
             var socket = this.socket;
 
             twitter.on('tweet', function (tweet, error) {
-                var _this2 = this;
-
                 if (error) console.log(error);
 
                 //console.log(`username: ${ tweet.user.screen_name }\ndescription: ${ tweet.user.description }\nfollowers: ${ tweet.user.followers_count }\n`);
@@ -89,7 +86,6 @@ var Scraper = function () {
                         email: userMail[0],
                         followers: tweet.user.followers_count
                     }).then(function () {
-                        console.log(_this2.socket);
                         console.log("================================\n");
                         console.log("================================\n\n");
 

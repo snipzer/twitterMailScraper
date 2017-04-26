@@ -68,6 +68,9 @@ var Server = function () {
             this._app.get('/scraper/:argument', function (request, response) {
                 _this.scraper.run(request.params.argument);
 
+                _this.getSocket().on("toto", function () {
+                    console.log("Toto is here !");
+                });
                 response.render('scraperView');
             });
         }
