@@ -10,7 +10,7 @@ export default class Server {
 
 
         this._app.set('view engine', 'pug');
-        this._app.set('views', path.join(__dirname, '/../views'));
+        this._app.set('views', path.join(__dirname, '../src/views'));
     }
 
     setPort(port) {

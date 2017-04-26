@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -14,13 +14,10 @@ var ScraperController = function () {
     }
 
     _createClass(ScraperController, [{
-        key: "index",
+        key: 'index',
         value: function index(req, res) {
-            res.send("Hello World");
-            // res.render('user/index', {
-            //     name: req.params.username,
-            //     title: 'Mon titre de page'
-            // });
+            //res.send(`Hello World`);
+            res.render('scraperView');
         }
     }]);
 
