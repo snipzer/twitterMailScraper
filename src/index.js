@@ -1,31 +1,7 @@
-import yaml from 'js-yaml';
-import fs from 'fs';
-import Twitter from 'node-tweet-stream';
+import Server from './server';
 
-import MongooseConnector from './utils/bdd/MongooseConnector';
-import ParserIndex from './utils/parser/parserIndex';
+const server = new Server();
 
-// Récupération des arguments
-const argument = new ParserIndex().getArguments();
+server.setPort();
 
-// Récupération de la config
-const config = yaml.safeLoad(fs.readFileSync('src/config/config.yml', 'utf8'));
-
-
-
-const client = new Twitter({
-    consumer_key: config.default.app.twitter.consumerKey,
-    consumer_secret: config.default.app.twitter.consumerSecret,
-    token: config.default.app.twitter.accessToken,
-    token_secret: config.default.app.twitter.accessTokenSecret
-});
-
-const mongooseConnector = new MongooseConnector(config.default.db.host, config.default.db.port, config.default.db.database);
-
-mongooseConnector.run().then(() =>
-{
-    mongooseConnector.stealUser(client, argument);
-});
-
-
-
+server.run();
