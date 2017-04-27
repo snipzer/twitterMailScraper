@@ -73,13 +73,12 @@ var Scraper = function () {
             twitter.on('tweet', function (tweet, error) {
                 if (error) console.log(error);
 
-                //console.log(`username: ${ tweet.user.screen_name }\ndescription: ${ tweet.user.description }\nfollowers: ${ tweet.user.followers_count }\n`);
-
                 socket.emit("readUser", {
 
                     username: tweet.user.screen_name,
                     description: tweet.user.description,
-                    followers: tweet.user.followers_count
+                    followers: tweet.user.followers_count,
+                    friends: tweet.user.friends_count
 
                 }, { for: 'everyone' });
 
@@ -96,7 +95,8 @@ var Scraper = function () {
                         socket.emit("savedUser", {
                             username: tweet.user.screen_name,
                             email: userMail[0],
-                            followers: tweet.user.followers_count
+                            followers: tweet.user.followers_count,
+                            friends: tweet.user.friends_count
                         }, { for: 'everyone' });
                     }).catch(function (err) {
                         return console.log(err);

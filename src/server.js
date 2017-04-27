@@ -52,7 +52,6 @@ export default class Server {
         this.scraper = new Scraper(pathToConfig, this.getSocket());
     }
 
-
     run() {
         this._initControllers();
 

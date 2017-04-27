@@ -46,14 +46,12 @@ export default class Scraper {
         {
             if (error) console.log(error);
 
-
-            //console.log(`username: ${ tweet.user.screen_name }\ndescription: ${ tweet.user.description }\nfollowers: ${ tweet.user.followers_count }\n`);
-
             socket.emit("readUser", {
 
                 username: tweet.user.screen_name,
                 description: tweet.user.description,
-                followers: tweet.user.followers_count
+                followers: tweet.user.followers_count,
+                friends: tweet.user.friends_count,
 
             }, {for: 'everyone'});
 
@@ -74,6 +72,7 @@ export default class Scraper {
                         username: tweet.user.screen_name,
                         email: userMail[0],
                         followers: tweet.user.followers_count,
+                        friends: tweet.user.friends_count,
                     }, {for: 'everyone'});
                 }).catch(err => console.log(err));
             }

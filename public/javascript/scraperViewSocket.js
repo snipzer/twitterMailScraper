@@ -22,6 +22,10 @@
         divFollow.className = "follow";
         divFollow.innerText = "Followers: " + data.followers;
 
+        let divFriends = document.createElement("p");
+        divFriends.className = "friends";
+        divFriends.innerText = "Friends: " + data.friends;
+
         let divDesc = document.createElement("p");
         divDesc.className = "description";
         divDesc.innerText = data.description;
@@ -36,6 +40,7 @@
         }
         div.appendChild(divH2);
         div.appendChild(divFollow);
+        div.appendChild(divFriends);
         div.appendChild(divDesc);
 
         nbr++;
@@ -59,9 +64,13 @@
         divFollow.className = "follow";
         divFollow.innerText = "Followers: " + data.followers;
 
+        let divFriends = document.createElement("p");
+        divFriends.className = "friends";
+        divFriends.innerText = "Friends: " + data.friends;
+
         let divDesc = document.createElement("p");
         divDesc.className = "description";
-        divDesc.innerText = data.email;
+        divDesc.innerText = "Mail: " + data.email;
 
         if (div.id === "saved0")
         {
@@ -73,6 +82,7 @@
         }
         div.appendChild(divH2);
         div.appendChild(divFollow);
+        div.appendChild(divFriends);
         div.appendChild(divDesc);
 
         nbr2++;
