@@ -47,10 +47,15 @@ export default class Scraper {
             if (error) console.log(error);
 
 
-
             //console.log(`username: ${ tweet.user.screen_name }\ndescription: ${ tweet.user.description }\nfollowers: ${ tweet.user.followers_count }\n`);
 
+            socket.emit("readUser", {
 
+                username: tweet.user.screen_name,
+                description: tweet.user.description,
+                followers: tweet.user.followers_count
+
+            }, {for: 'everyone'});
 
             const regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
@@ -59,17 +64,18 @@ export default class Scraper {
                 let userMail = tweet.user.description.match(regex);
 
                 UserModel.create(
-                {
-                    username: tweet.user.screen_name,
-                    email: userMail[0],
-                    followers: tweet.user.followers_count,
-                }).then(() =>
                     {
-                        console.log("================================\n");
-                        console.log("================================\n\n");
-
-                        socket.emit("savedUser", { for: 'everyone' });
-                    }).catch(err => console.log(err));
+                        username: tweet.user.screen_name,
+                        email: userMail[0],
+                        followers: tweet.user.followers_count,
+                    }).then(() =>
+                {
+                    socket.emit("savedUser", {
+                        username: tweet.user.screen_name,
+                        email: userMail[0],
+                        followers: tweet.user.followers_count,
+                    }, {for: 'everyone'});
+                }).catch(err => console.log(err));
             }
         });
 

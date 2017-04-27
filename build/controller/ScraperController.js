@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -9,17 +9,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ScraperController = function () {
-    function ScraperController(socket) {
+    function ScraperController() {
         _classCallCheck(this, ScraperController);
-
-        this.socket = socket;
     }
 
     _createClass(ScraperController, [{
-        key: "index",
+        key: 'index',
         value: function index(req, res) {
-            console.log(this.socket);
-            this.socket.emit("toto", { for: "everyone" });
 
             res.render('scraperView');
         }

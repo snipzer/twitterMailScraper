@@ -25,10 +25,9 @@ export default class Server {
     }
 
     _initControllers() {
-        const socket = this.getSocket();
-        const scraperController = new ScraperController(socket);
+        const scraperController = new ScraperController();
 
-        this._app.get('/', scraperController.index.bind(scraperController));
+        this._app.get('/', scraperController.index);
 
         this._app.get('/scraper/:argument', (request, response) =>
         {

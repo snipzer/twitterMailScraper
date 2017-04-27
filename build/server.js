@@ -61,10 +61,9 @@ var Server = function () {
         value: function _initControllers() {
             var _this = this;
 
-            var socket = this.getSocket();
-            var scraperController = new _ScraperController2.default(socket);
+            var scraperController = new _ScraperController2.default();
 
-            this._app.get('/', scraperController.index.bind(scraperController));
+            this._app.get('/', scraperController.index);
 
             this._app.get('/scraper/:argument', function (request, response) {
                 _this.scraper.run(request.params.argument);
