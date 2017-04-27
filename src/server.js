@@ -25,26 +25,22 @@ export default class Server {
     }
 
     _initControllers() {
-        const scraperController = new ScraperController();
+        const socket = this.getSocket();
+        const scraperController = new ScraperController(socket);
 
-        this._app.get('/', scraperController.index);
+        this._app.get('/', scraperController.index.bind(scraperController));
 
         this._app.get('/scraper/:argument', (request, response) =>
         {
             this.scraper.run(request.params.argument);
 
-
-            this.getSocket().on("toto", () =>
-            {
-                console.log("Toto is here !");
-            });
             response.render('scraperView');
         })
     }
 
     setSocket(variable, middleware)
     {
-        this._app.set(variable, middleware)
+        this._app.set(variable, middleware);
     }
 
     getSocket()

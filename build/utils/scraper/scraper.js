@@ -89,7 +89,7 @@ var Scraper = function () {
                         console.log("================================\n");
                         console.log("================================\n\n");
 
-                        socket.emit("toto");
+                        socket.emit("savedUser", { for: 'everyone' });
                     }).catch(function (err) {
                         return console.log(err);
                     });

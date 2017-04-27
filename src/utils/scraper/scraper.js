@@ -68,7 +68,7 @@ export default class Scraper {
                         console.log("================================\n");
                         console.log("================================\n\n");
 
-                        socket.emit("toto");
+                        socket.emit("savedUser", { for: 'everyone' });
                     }).catch(err => console.log(err));
             }
         });

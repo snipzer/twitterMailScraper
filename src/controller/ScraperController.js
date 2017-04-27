@@ -1,12 +1,16 @@
-import yaml from 'js-yaml';
-import fs from 'fs';
-import Twitter from 'node-tweet-stream';
-import ParserIndex from '../utils/parser/parserIndex';
-import MongooseConnector from '../utils/bdd/MongooseConnector';
 
 export default class ScraperController {
+
+    constructor(socket)
+    {
+        this.socket = socket;
+    }
+
     index(req, res)
     {
+        console.log(this.socket);
+        this.socket.emit("toto", {for: "everyone"});
+
         res.render('scraperView');
     }
 

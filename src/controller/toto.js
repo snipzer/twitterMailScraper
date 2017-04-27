@@ -1,1 +1,0 @@
-import toto from '../../public/javascript'
