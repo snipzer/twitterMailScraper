@@ -78,6 +78,12 @@ var Server = function () {
 
                 response.render('scraperView.twig', { arguments: _this.scraper.arguments });
             });
+
+            this._app.post('/untrack', function (request, response) {
+                _this.scraper.untrack(request.body.untracked);
+
+                response.render('scraperView.twig', { arguments: _this.scraper.arguments });
+            });
         }
     }, {
         key: 'setSocket',

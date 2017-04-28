@@ -4,9 +4,6 @@
     let nbr = 0;
     let nbr2 = 0;
 
-
-    console.log(toto);
-
     socket.on('readUser', (data) =>
     {
         console.log("Read user");

@@ -45,6 +45,13 @@ export default class Server {
 
             response.render('scraperView.twig', { arguments: this.scraper.arguments });
         });
+
+        this._app.post('/untrack', (request, response) =>
+        {
+            this.scraper.untrack(request.body.untracked);
+
+            response.render('scraperView.twig', { arguments: this.scraper.arguments });
+        });
     }
 
     setSocket(variable, middleware)

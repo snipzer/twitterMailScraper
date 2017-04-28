@@ -130,6 +130,13 @@ var Scraper = function () {
                 _this2.twitter.track(item);
             });
         }
+    }, {
+        key: 'untrack',
+        value: function untrack(argument) {
+            var index = this.arguments.indexOf(argument);
+
+            this.arguments.splice(index, 1);
+        }
     }]);
 
     return Scraper;

@@ -104,4 +104,11 @@ export default class Scraper {
             this.twitter.track(item);
         });
     }
+
+    untrack(argument)
+    {
+        const index = this.arguments.indexOf(argument);
+
+        this.arguments.splice(index, 1);
+    }
 }
