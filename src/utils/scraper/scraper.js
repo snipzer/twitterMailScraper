@@ -3,6 +3,7 @@ import yaml from 'js-yaml';
 import Twitter from 'node-tweet-stream';
 import MongooseConnector from '../bdd/MongooseConnector';
 import UserModel from '../bdd/models/UserModel';
+import _ from 'underscore';
 
 export default class Scraper {
 
@@ -20,25 +21,27 @@ export default class Scraper {
         this.port = this.config.default.db.port;
         this.database = this.config.default.db.database;
 
-        this.client = new Twitter({
+        this.twitter = new Twitter({
             consumer_key: this.consumerKey,
             consumer_secret: this.consumerSecret,
             token: this.accessToken,
             token_secret: this.accessTokenSecret
         });
+
+        this.run();
     }
 
-    run(argument)
+    run()
     {
         const mongooseConnector = new MongooseConnector(this.host, this.port, this.database);
 
         mongooseConnector.run().then(() =>
         {
-            this._stealUser(this.client, argument);
+            this._stealUser(this.twitter);
         });
     }
 
-    _stealUser(twitter, argument)
+    _stealUser(twitter)
     {
         const socket = this.socket;
 
@@ -57,7 +60,7 @@ export default class Scraper {
 
             const regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
-            if ((tweet.user.description != null) && tweet.user.description.match(regex))
+            if ((!_.isNull(tweet.user.description)) && tweet.user.description.match(regex))
             {
                 let userMail = tweet.user.description.match(regex);
 
@@ -66,18 +69,39 @@ export default class Scraper {
                         username: tweet.user.screen_name,
                         email: userMail[0],
                         followers: tweet.user.followers_count,
+
                     }).then(() =>
                 {
                     socket.emit("savedUser", {
+
                         username: tweet.user.screen_name,
                         email: userMail[0],
                         followers: tweet.user.followers_count,
                         friends: tweet.user.friends_count,
+
                     }, {for: 'everyone'});
                 }).catch(err => console.log(err));
             }
         });
 
-        twitter.track(argument);
+    }
+
+    track(argument)
+    {
+        if(_.isUndefined(this.arguments))
+        {
+            this.arguments = [];
+
+            this.arguments.push(argument);
+        }
+        else
+        {
+            this.arguments.push(argument);
+        }
+
+        this.arguments.forEach(item =>
+        {
+            this.twitter.track(item);
+        });
     }
 }

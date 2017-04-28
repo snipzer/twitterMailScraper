@@ -22,8 +22,4 @@ server.setPort();
 
 server.setScraper(_path2.default.join(__dirname, "../src/config/config.yml"));
 
-server.getSocket().on("toto", function () {
-  return console.log("toto is here");
-});
-
 server.run();

@@ -26,6 +26,10 @@ var _UserModel = require('../bdd/models/UserModel');
 
 var _UserModel2 = _interopRequireDefault(_UserModel);
 
+var _underscore = require('underscore');
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -46,28 +50,30 @@ var Scraper = function () {
         this.port = this.config.default.db.port;
         this.database = this.config.default.db.database;
 
-        this.client = new _nodeTweetStream2.default({
+        this.twitter = new _nodeTweetStream2.default({
             consumer_key: this.consumerKey,
             consumer_secret: this.consumerSecret,
             token: this.accessToken,
             token_secret: this.accessTokenSecret
         });
+
+        this.run();
     }
 
     _createClass(Scraper, [{
         key: 'run',
-        value: function run(argument) {
+        value: function run() {
             var _this = this;
 
             var mongooseConnector = new _MongooseConnector2.default(this.host, this.port, this.database);
 
             mongooseConnector.run().then(function () {
-                _this._stealUser(_this.client, argument);
+                _this._stealUser(_this.twitter);
             });
         }
     }, {
         key: '_stealUser',
-        value: function _stealUser(twitter, argument) {
+        value: function _stealUser(twitter) {
             var socket = this.socket;
 
             twitter.on('tweet', function (tweet, error) {
@@ -84,27 +90,45 @@ var Scraper = function () {
 
                 var regex = /(?:(?:"[\w-\s]+")|(?:[\w-]+(?:\.[\w-]+)*)|(?:"[\w-\s]+")(?:[\w-]+(?:\.[\w-]+)*))(?:@(?:(?:[\w-]+\.)*\w[\w-]{0,66})\.(?:[a-z]{2,6}(?::\.[a-z]{2})?))|(?:@\[?(?:(?:25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?)/g;
 
-                if (tweet.user.description != null && tweet.user.description.match(regex)) {
+                if (!_underscore2.default.isNull(tweet.user.description) && tweet.user.description.match(regex)) {
                     var userMail = tweet.user.description.match(regex);
 
                     _UserModel2.default.create({
                         username: tweet.user.screen_name,
                         email: userMail[0],
                         followers: tweet.user.followers_count
+
                     }).then(function () {
                         socket.emit("savedUser", {
+
                             username: tweet.user.screen_name,
                             email: userMail[0],
                             followers: tweet.user.followers_count,
                             friends: tweet.user.friends_count
+
                         }, { for: 'everyone' });
                     }).catch(function (err) {
                         return console.log(err);
                     });
                 }
             });
+        }
+    }, {
+        key: 'track',
+        value: function track(argument) {
+            var _this2 = this;
 
-            twitter.track(argument);
+            if (_underscore2.default.isUndefined(this.arguments)) {
+                this.arguments = [];
+
+                this.arguments.push(argument);
+            } else {
+                this.arguments.push(argument);
+            }
+
+            this.arguments.forEach(function (item) {
+                _this2.twitter.track(item);
+            });
         }
     }]);
 
