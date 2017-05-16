@@ -5,3 +5,7 @@ default:
             accessTokenSecret: ACCESS_TOKEN_SECRET
             consumerKey: CONSUMER_KEY
             consumerSecret: CONSUMER_SECRET
+    db:
+        host: IP_ADRESSE
+        port: PORT
+        database: DATABASE_NAME
